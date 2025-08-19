@@ -1,0 +1,49 @@
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Testing
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+coverage.xml
+.coverage
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Data files (add specific patterns as needed)
+data/raw/
+data/temp/
+*.csv
+*.parquet
+*.json
+
+# Credentials
+credentials/
+*.pem
+*.key
+config/secrets/
