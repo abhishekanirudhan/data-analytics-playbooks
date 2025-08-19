@@ -1,89 +1,135 @@
-# Data Analytics Playbooks
+# Playbooks Repository
 
-A comprehensive collection of templates, frameworks, and best practices for building robust data and analytics workflows. These playbooks serve as standardized context files to reduce decision fatigue, ensure consistency, and embed industry best practices into daily workflows.
+A comprehensive collection of operational playbooks, templates, and automation frameworks for various technical workflows. This repository serves as a centralized knowledge base for standardized procedures, best practices, and reusable solutions.
 
-## 📋 Quick Start Guide
-
-The playbooks are organized by workflow stage and priority. Start with **Priority 1** files for immediate impact, then expand to other areas based on your team's needs.
-
-## 🎯 Priority 1: Foundation & High-Impact
-
-### Core Quality & Reliability
-- **[Data Quality Assessment Framework](./data-quality-framework.md)** - Standardized quality dimensions, metrics, and validation rules
-- **[Pipeline Testing Framework](./pipeline-testing-guide.md)** - Unit testing, integration testing, and quality test automation
-- **[Monitoring & Observability Guide](./analytics-monitoring-framework.md)** - Pipeline health dashboards and alerting strategies
-
-### Visualization & Communication
-- **[Dashboard Design Guide](./dashboard-design-guide.md)** - Complete design system for clean, accessible dashboards
-- **[Chart Selection Decision Tree](./visualization-decision-guide.md)** - When to use specific chart types and interaction patterns
-
-### Infrastructure & Integration
-- **[API Integration Templates](./api-integration-standards.md)** - Standardized patterns for data source connections
-- **[CI/CD for Analytics](./analytics-cicd-template.md)** - Deployment strategies and environment management
-
-## 🔧 Priority 2: Operational Excellence
-
-### Architecture & Patterns
-- **[Data Transformation Patterns](./transformation-design-patterns.md)** - dbt structures, feature engineering, and pipeline design
-- **[Data Architecture Decision Records](./architecture-decision-template.md)** - Templates for documenting technical choices
-- **[Processing Pattern Guide](./processing-pattern-guide.md)** - Real-time vs batch decision frameworks
-
-### Governance & Security
-- **[Data Governance Playbook](./data-governance-standards.md)** - Privacy compliance, access control, and stewardship
-- **[Incident Response Playbook](./data-incident-response.md)** - Step-by-step procedures for data outages and quality issues
-
-## 👥 Priority 3: Team Collaboration
-
-### Knowledge Management
-- **[Master Data Dictionary Template](./data-dictionary-standards.md)** - Business glossaries and metric definitions
-- **[Code Review Guidelines](./analytics-code-review-guide.md)** - Standards for SQL, Python, and documentation
-- **[Analytics Onboarding Checklist](./team-onboarding-template.md)** - Complete setup and training procedures
-
-### Experimentation
-- **[A/B Testing Framework](./ab-testing-guide.md)** - Experiment design and statistical analysis templates
-
-## 🏗️ Workflow Coverage
-
-These playbooks cover the complete data analytics lifecycle:
+## 📚 Repository Structure
 
 ```
-Data Sources → Ingestion → Cleaning → Transformation → Visualization → Deployment → Monitoring
-     ↓             ↓          ↓           ↓             ↓             ↓           ↓
-API Templates  Quality    Testing     Transform     Dashboard    CI/CD     Monitoring
-              Framework  Framework    Patterns      Design      Templates  Framework
+playbooks/
+├── data-analytics/          # Data & analytics workflow playbooks
+│   ├── README.md           # Comprehensive data analytics guide
+│   └── [15+ playbooks]     # Quality, testing, monitoring, visualization guides
+│
+└── claude-playbooks/       # Claude Code workflow automation
+    ├── README.md          # Complete automation documentation
+    ├── install.sh         # One-click setup script
+    └── [scripts/templates]# Automation components
 ```
 
-## 🚀 Getting Started
+## 🎯 Playbook Collections
 
-1. **Start with Foundation**: Implement Data Quality and Testing frameworks first
-2. **Add Visualization**: Use Dashboard Design and Chart Selection guides
-3. **Scale Operations**: Implement CI/CD and Monitoring frameworks
-4. **Optimize Collaboration**: Add team processes and governance
+### 1. Data Analytics Playbooks
+**Location:** `data-analytics/`
 
-## 📚 How to Use These Playbooks
+Comprehensive frameworks for building robust data and analytics workflows:
+- **Data Quality & Testing** - Validation frameworks and pipeline testing
+- **Visualization & Dashboards** - Design systems and chart selection guides
+- **Infrastructure & CI/CD** - Deployment strategies and monitoring
+- **Governance & Security** - Privacy compliance and incident response
+- **Team Collaboration** - Code reviews, onboarding, and documentation
 
-Each playbook includes:
-- ✅ **Checklists** for immediate implementation
-- 📋 **Templates** for consistent documentation
-- 🎯 **Decision Trees** for choosing between options
-- 📊 **Examples** with real-world scenarios
-- 🔗 **Integration Guides** for connecting with other playbooks
+[View Data Analytics Documentation →](./data-analytics/README.md)
+
+### 2. Claude Code Workflow Automation
+**Location:** `claude-playbooks/`
+
+Intelligent workflow automation system for Claude Code that provides:
+- **Auto-Project Analysis** - Automatic project structure understanding
+- **Cross-Session Continuity** - Task tracking and context preservation
+- **Session Handoffs** - Seamless transitions between work sessions
+- **Zero Configuration** - Works immediately after one-click installation
+
+[View Claude Automation Documentation →](./claude-playbooks/README.md)
+
+## 🚀 Quick Start
+
+### For Data Analytics Workflows
+```bash
+cd data-analytics/
+# Start with Priority 1 playbooks for immediate impact
+# Each playbook contains templates, checklists, and examples
+```
+
+### For Claude Code Automation
+```bash
+cd claude-playbooks/
+./install.sh  # One-click installation
+# Automation runs automatically in every Claude Code session
+```
+
+## 💡 Philosophy
+
+These playbooks embody key principles:
+
+1. **Standardization** - Consistent approaches reduce decision fatigue
+2. **Best Practices** - Industry-proven patterns embedded in workflows
+3. **Reusability** - Templates and frameworks that scale across projects
+4. **Documentation** - Clear guides that enable knowledge transfer
+5. **Automation** - Reduce manual work through intelligent tooling
+
+## 📋 Use Cases
+
+### When to Use These Playbooks
+
+- **Starting New Projects** - Use templates to bootstrap with best practices
+- **Operational Issues** - Follow incident response and debugging guides
+- **Team Onboarding** - Standardized training and setup procedures
+- **Quality Assurance** - Implement testing and monitoring frameworks
+- **Process Improvement** - Adopt proven patterns and workflows
+
+### Who Should Use These
+
+- **Data Engineers** - Pipeline design, testing, and monitoring
+- **Analytics Engineers** - Transformation patterns and quality frameworks
+- **Data Scientists** - Experimentation frameworks and visualization guides
+- **DevOps/DataOps** - CI/CD templates and infrastructure patterns
+- **Engineering Teams** - Code review standards and collaboration workflows
+- **AI/ML Developers** - Claude automation for enhanced productivity
 
 ## 🤝 Contributing
 
-These playbooks are living documents that should evolve with your team's needs and industry best practices. To contribute:
+We welcome contributions that improve existing playbooks or add new ones:
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your improvements
-4. Submit a pull request with clear description of changes
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/new-playbook`)
+3. **Add** your playbook with clear documentation
+4. **Test** any automation scripts or templates
+5. **Submit** a pull request with description of changes
+
+### Playbook Standards
+
+Each playbook should include:
+- Clear purpose and use cases
+- Step-by-step instructions
+- Templates or code examples
+- Success criteria
+- Common pitfalls to avoid
+
+## 📊 Repository Stats
+
+- **Total Playbooks:** 20+
+- **Categories:** 2 major collections
+- **Templates:** 15+ reusable templates
+- **Automation Scripts:** 5+ workflow automations
+- **Last Updated:** 2025-01-19
+
+## 🔗 Related Resources
+
+- [Data Analytics Best Practices](./data-analytics/README.md)
+- [Claude Code Documentation](./claude-playbooks/README.md)
+- [Quick Start Guides](./claude-playbooks/QUICKSTART.md)
+- [Verification & Testing](./claude-playbooks/VERIFICATION.md)
 
 ## 📄 License
 
-MIT License - Feel free to adapt these playbooks for your organization's specific needs.
+MIT License - Feel free to adapt these playbooks for your organization's needs.
+
+## 🏷️ Tags
+
+`playbooks` `data-analytics` `automation` `best-practices` `templates` `workflows` `claude-code` `devops` `dataops` `quality-assurance` `documentation`
 
 ---
 
-**Last Updated**: 2025-01-19  
-**Version**: 1.0  
-**Maintainer**: [Your Team Name]
+**Repository Maintainer:** Abhishek Anirudhan  
+**Last Updated:** 2025-01-19  
+**Version:** 1.1.0
