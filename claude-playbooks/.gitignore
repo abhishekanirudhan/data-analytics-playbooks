@@ -1,0 +1,27 @@
+# Claude Workflow Automation - Git Ignore
+
+# Ignore test directories
+test-*/
+claude-test-*/
+
+# Ignore backup files
+*.backup
+*.bak
+*~
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore any local configurations
+local-config/
+.env
+
+# Keep the context directories out of version control
+# (These should be created per-project)
+.claude-context/

@@ -1,0 +1,22 @@
+# Claude Project Instructions
+
+## Automatic Workflow on Launch
+ALWAYS perform these steps when Claude Code launches in a new project:
+
+1. **Project Analysis**: Run the project context analysis workflow
+2. **Session Setup**: Initialize or load session state management
+3. **Task Continuity**: Check for pending tasks from previous sessions
+
+Execute this by running: `source ~/.claude/scripts/auto-launch.sh`
+
+## Python Development Best Practices
+
+### Virtual Environment Usage
+When working with Python projects, always use a virtual environment to manage dependencies:
+
+1. Create a virtual environment: `python3 -m venv venv`
+2. Activate the virtual environment: `source venv/bin/activate`
+3. Install dependencies: `pip install -r requirements.txt`
+4. Deactivate when done: `deactivate`
+
+This ensures isolated dependency management and prevents conflicts with system-wide packages.
