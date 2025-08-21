@@ -105,13 +105,6 @@ Each playbook should include:
 - Success criteria
 - Common pitfalls to avoid
 
-## 📊 Repository Stats
-
-- **Total Playbooks:** 20+
-- **Categories:** 2 major collections
-- **Templates:** 15+ reusable templates
-- **Automation Scripts:** 5+ workflow automations
-- **Last Updated:** 2025-01-19
 
 ## 🔗 Related Resources
 
