@@ -310,10 +310,6 @@ fi
 - No sensitive data collection
 - Git-ignored by default (add `.claude-context` to `.gitignore`)
 
-## 📝 License
-
-This workflow automation system is provided as-is for productivity enhancement.
-
 ---
 
 **Version:** 1.0.0  
