@@ -1,0 +1,73 @@
+{
+  "name": "git-workflow-hook",
+  "description": "Enforces git best practices and workflow standards",
+  "events": ["PreToolUse", "PostToolUse"],
+  "script": {
+    "PreToolUse": {
+      "Bash": {
+        "condition": "tool.name === 'Bash' && command_matches('git commit')",
+        "action": "validate_commit",
+        "checks": [
+          {
+            "type": "check_uncommitted_changes",
+            "action": "run_command",
+            "command": "git status --porcelain",
+            "validate": "ensure_staged_files"
+          },
+          {
+            "type": "check_tests",
+            "condition": "test_command_exists()",
+            "action": "suggest",
+            "message": "Consider running tests before committing. Run: {test_command}"
+          },
+          {
+            "type": "validate_commit_message",
+            "pattern": "^(feat|fix|docs|style|refactor|test|chore):",
+            "action": "suggest",
+            "message": "Consider using conventional commit format: type: description"
+          }
+        ]
+      },
+      "Bash_push": {
+        "condition": "tool.name === 'Bash' && command_matches('git push')",
+        "action": "validate_push",
+        "checks": [
+          {
+            "type": "check_remote_sync",
+            "action": "run_command",
+            "command": "git fetch && git status -uno",
+            "validate": "ensure_up_to_date"
+          },
+          {
+            "type": "check_protected_branch",
+            "branches": ["main", "master", "production"],
+            "action": "warn",
+            "message": "Pushing to protected branch. Ensure this is intended."
+          }
+        ]
+      }
+    },
+    "PostToolUse": {
+      "Bash": {
+        "condition": "tool.name === 'Bash' && command_matches('git commit') && exit_code === 0",
+        "action": "log_commit",
+        "operations": [
+          {
+            "type": "append_to_file",
+            "file": ".claude/context/decisions.md",
+            "section": "## Commit History",
+            "content": "- {commit_hash} - {commit_message} - {timestamp}"
+          },
+          {
+            "type": "update_task",
+            "condition": "commit_closes_task()",
+            "file": ".claude/context/task-tracker.md",
+            "status": "completed"
+          }
+        ]
+      }
+    }
+  },
+  "enabled": true,
+  "priority": 85
+}

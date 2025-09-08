@@ -1,0 +1,122 @@
+{
+  "name": "test-runner",
+  "description": "Intelligent test execution and coverage analysis agent",
+  "trigger": "manual|auto|hook",
+  "auto_trigger_conditions": [
+    "file_modification",
+    "pre_commit",
+    "dependency_update"
+  ],
+  "capabilities": {
+    "tools": ["Bash", "Read", "Grep", "Write"],
+    "permissions": {
+      "execute_commands": true,
+      "read_all": true,
+      "write_locations": [".claude/context/test-results/"]
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "detect_test_framework",
+        "actions": [
+          "scan_for_test_files",
+          "identify_test_commands",
+          "check_configuration"
+        ]
+      },
+      {
+        "name": "determine_test_scope",
+        "actions": [
+          "analyze_changed_files",
+          "map_test_dependencies",
+          "calculate_affected_tests"
+        ]
+      },
+      {
+        "name": "execute_tests",
+        "actions": [
+          "run_unit_tests",
+          "run_integration_tests",
+          "run_affected_tests_only"
+        ]
+      },
+      {
+        "name": "analyze_results",
+        "actions": [
+          "parse_test_output",
+          "identify_failures",
+          "calculate_coverage",
+          "detect_flaky_tests"
+        ]
+      },
+      {
+        "name": "generate_report",
+        "actions": [
+          "summarize_results",
+          "highlight_failures",
+          "suggest_fixes",
+          "track_coverage_trends"
+        ]
+      }
+    ]
+  },
+  "test_strategies": {
+    "smart_selection": {
+      "enabled": true,
+      "strategies": [
+        "affected_files_only",
+        "dependency_based",
+        "risk_based",
+        "time_optimized"
+      ]
+    },
+    "parallel_execution": {
+      "enabled": true,
+      "max_workers": 4
+    },
+    "retry_logic": {
+      "max_retries": 2,
+      "retry_flaky_tests": true
+    }
+  },
+  "framework_support": {
+    "javascript": ["jest", "mocha", "vitest", "cypress"],
+    "python": ["pytest", "unittest", "nose"],
+    "rust": ["cargo test"],
+    "go": ["go test"],
+    "java": ["junit", "testng"]
+  },
+  "prompts": {
+    "initial": "Run appropriate tests based on recent changes and provide detailed results.",
+    "full": "Run complete test suite with coverage analysis.",
+    "quick": "Run only the most critical tests affected by recent changes.",
+    "fix": "Debug and fix the failing test: {test_name}"
+  },
+  "output": {
+    "format": "markdown",
+    "destination": ".claude/context/test-results/result-{timestamp}.md",
+    "sections": [
+      "Summary",
+      "Test Results",
+      "Failed Tests",
+      "Coverage Report",
+      "Performance Metrics",
+      "Recommendations"
+    ],
+    "metrics": {
+      "pass_rate": true,
+      "coverage_percentage": true,
+      "execution_time": true,
+      "flaky_test_count": true
+    }
+  },
+  "intelligence": {
+    "auto_fix_simple_failures": true,
+    "suggest_missing_tests": true,
+    "identify_slow_tests": true,
+    "detect_test_patterns": true
+  },
+  "enabled": true,
+  "priority": 88
+}

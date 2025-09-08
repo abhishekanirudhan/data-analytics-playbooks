@@ -1,0 +1,64 @@
+{
+  "name": "context-update-hook",
+  "description": "Automatically updates context files after modifications",
+  "events": ["PostToolUse", "UserPromptSubmit"],
+  "script": {
+    "PostToolUse": {
+      "Write|Edit|MultiEdit": {
+        "condition": "['Write', 'Edit', 'MultiEdit'].includes(tool.name)",
+        "action": "update_context",
+        "operations": [
+          {
+            "type": "append_to_file",
+            "file": ".claude/context/session-state.md",
+            "section": "## Files Modified",
+            "content": "- {file_path} - {timestamp} - {operation_type}"
+          },
+          {
+            "type": "update_task_status",
+            "condition": "task_related_file(file_path)",
+            "file": ".claude/context/task-tracker.md"
+          }
+        ]
+      },
+      "Bash": {
+        "condition": "tool.name === 'Bash' && command_matches('git commit|git push|npm install|pip install')",
+        "action": "log_milestone",
+        "operations": [
+          {
+            "type": "append_to_file",
+            "file": ".claude/context/session-state.md",
+            "section": "## Key Actions",
+            "content": "- {command} - {timestamp} - {exit_code}"
+          }
+        ]
+      }
+    },
+    "UserPromptSubmit": {
+      "always": {
+        "condition": "true",
+        "action": "analyze_intent",
+        "operations": [
+          {
+            "type": "classify_request",
+            "categories": [
+              "bug_fix",
+              "feature_development",
+              "refactoring",
+              "documentation",
+              "debugging",
+              "analysis"
+            ]
+          },
+          {
+            "type": "update_session_context",
+            "file": ".claude/context/session-state.md",
+            "content": "Current focus: {detected_category}"
+          }
+        ]
+      }
+    }
+  },
+  "enabled": true,
+  "priority": 90
+}

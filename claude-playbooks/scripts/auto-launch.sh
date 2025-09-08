@@ -4,11 +4,18 @@
 # Automatically analyzes project context and sets up session management
 
 PROJECT_ROOT="$(pwd)"
-CLAUDE_CONTEXT="$PROJECT_ROOT/.claude-context"
+CLAUDE_DIR="$PROJECT_ROOT/.claude"
+CLAUDE_CONTEXT="$CLAUDE_DIR/context"
 
 echo "🤖 Initializing Claude workflow automation..."
 
-# Create context directory structure
+# Check if .claude directory exists, create if not
+if [ ! -d "$CLAUDE_DIR" ]; then
+    echo "📁 Creating .claude directory..."
+    mkdir -p "$CLAUDE_DIR"
+fi
+
+# Create context directory structure within .claude
 mkdir -p "$CLAUDE_CONTEXT/handoffs"
 
 # Step 1: Advanced Project Context Analysis

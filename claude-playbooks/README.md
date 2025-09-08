@@ -4,6 +4,7 @@ Complete setup guide for implementing Claude Code's automated workflow system on
 
 ## 🚀 Quick Installation
 
+### Standard Installation
 ```bash
 # Clone or download this playbook
 cd ~/Projects/master-playbooks/claude-playbooks
@@ -12,8 +13,15 @@ cd ~/Projects/master-playbooks/claude-playbooks
 ./install.sh
 ```
 
+### Enhanced Installation (with Hooks + Agents)
+```bash
+# Install with intelligent automation features
+./install.sh --enhanced
+```
+
 ## 📋 What This Installs
 
+### Core Features
 A comprehensive workflow automation system that:
 
 1. **Auto-analyzes** projects when Claude Code launches
@@ -22,25 +30,46 @@ A comprehensive workflow automation system that:
 4. **Documents decisions** and technical choices
 5. **Creates handoffs** for seamless session transitions
 
+### Enhanced Features (--enhanced flag)
+With hooks and agents enabled:
+
+6. **Safety Hooks** prevent destructive operations automatically
+7. **Smart Agents** provide intelligent task management and code review
+8. **Auto-updates** maintain context without manual intervention
+9. **Git enforcement** ensures best practices on every commit
+10. **Test automation** runs smart test selection based on changes
+
 ## 🗂️ Playbook Contents
 
 ```
 claude-playbooks/
-├── install.sh              # One-click installation script
-├── README.md              # This file
-├── CLAUDE.md.template     # Global instructions template
-├── scripts/               # Core automation scripts
-│   ├── auto-launch.sh     # Main workflow trigger
-│   ├── context-analyzer.py # Advanced project analysis
-│   └── task-manager.sh    # Task management utilities
-├── templates/             # Document templates
-│   ├── project-overview.md # Project analysis template
-│   └── session-handoff.md  # Session transition template
-├── workflows/             # Workflow documentation
-│   ├── project-analyzer.md # Analysis workflow guide
-│   └── session-handoff.md  # Handoff workflow guide
-└── docs/                  # Additional documentation
-    └── README.md          # Detailed system documentation
+├── install.sh                  # One-click installation script
+├── README.md                   # This file
+├── CLAUDE.md.template          # Global instructions template
+├── scripts/                    # Core automation scripts
+│   ├── auto-launch.sh          # Main workflow trigger
+│   ├── auto-launch-enhanced.sh # Enhanced trigger with hooks/agents
+│   ├── context-analyzer.py     # Advanced project analysis
+│   └── task-manager.sh         # Task management utilities
+├── hooks/                      # Event-driven automation (NEW)
+│   ├── safety-hook.json        # Prevents destructive operations
+│   ├── context-update-hook.json# Auto-maintains session state
+│   └── git-workflow-hook.json  # Enforces git best practices
+├── agents/                     # Intelligent assistants (NEW)
+│   ├── project-analyzer.json   # Deep codebase analysis
+│   ├── task-manager.json       # Smart task prioritization
+│   ├── code-reviewer.json      # Automated quality checks
+│   ├── session-handoff.json    # Context preservation
+│   └── test-runner.json        # Intelligent test execution
+├── templates/                  # Document templates
+│   ├── project-overview.md     # Project analysis template
+│   └── session-handoff.md      # Session transition template
+├── workflows/                  # Workflow documentation
+│   ├── project-analyzer.md     # Analysis workflow guide
+│   └── session-handoff.md      # Handoff workflow guide
+└── docs/                       # Additional documentation
+    ├── README.md               # Detailed system documentation
+    └── HOOKS_AND_AGENTS.md     # Enhanced features guide (NEW)
 ```
 
 ## 🔧 Manual Installation

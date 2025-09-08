@@ -1,0 +1,108 @@
+{
+  "name": "code-reviewer",
+  "description": "Automated code review and quality assurance agent",
+  "trigger": "manual|hook",
+  "hook_triggers": [
+    "pre_commit",
+    "post_file_edit",
+    "pr_creation"
+  ],
+  "capabilities": {
+    "tools": ["Read", "Grep", "Bash"],
+    "permissions": {
+      "read_all": true,
+      "execute_tests": true,
+      "run_linters": true
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "identify_changes",
+        "actions": [
+          "git_diff_analysis",
+          "identify_modified_files",
+          "categorize_changes"
+        ]
+      },
+      {
+        "name": "static_analysis",
+        "actions": [
+          "check_syntax",
+          "run_linters",
+          "check_formatting"
+        ]
+      },
+      {
+        "name": "code_quality_review",
+        "actions": [
+          "check_complexity",
+          "identify_code_smells",
+          "check_best_practices",
+          "security_scan"
+        ]
+      },
+      {
+        "name": "test_coverage",
+        "actions": [
+          "check_test_existence",
+          "run_related_tests",
+          "calculate_coverage_delta"
+        ]
+      },
+      {
+        "name": "generate_report",
+        "actions": [
+          "summarize_findings",
+          "provide_suggestions",
+          "calculate_quality_score"
+        ]
+      }
+    ]
+  },
+  "review_criteria": {
+    "code_quality": {
+      "complexity_threshold": 10,
+      "duplication_threshold": 5,
+      "line_length": 120,
+      "function_length": 50
+    },
+    "patterns": {
+      "check_naming_conventions": true,
+      "check_error_handling": true,
+      "check_logging": true,
+      "check_documentation": true
+    },
+    "security": {
+      "scan_for_secrets": true,
+      "check_input_validation": true,
+      "check_sql_injection": true,
+      "check_xss": true
+    }
+  },
+  "prompts": {
+    "initial": "Review the recent code changes for quality, security, and best practices.",
+    "detailed": "Perform a comprehensive code review including style, complexity, security, and test coverage.",
+    "quick": "Perform a quick review focusing on critical issues and obvious problems."
+  },
+  "output": {
+    "format": "markdown",
+    "sections": [
+      "Summary",
+      "Critical Issues",
+      "Suggestions",
+      "Security Concerns",
+      "Test Coverage",
+      "Quality Score"
+    ],
+    "inline_comments": true,
+    "severity_levels": ["critical", "major", "minor", "info"]
+  },
+  "integration": {
+    "auto_fix_minor_issues": true,
+    "suggest_improvements": true,
+    "block_on_critical": true
+  },
+  "enabled": true,
+  "priority": 90
+}

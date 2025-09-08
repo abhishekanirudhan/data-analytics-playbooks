@@ -7,9 +7,18 @@ set -e  # Exit on error
 
 CLAUDE_HOME="$HOME/.claude"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENHANCED_MODE=false
+
+# Check for enhanced mode flag
+if [ "$1" == "--enhanced" ] || [ "$1" == "-e" ]; then
+    ENHANCED_MODE=true
+fi
 
 echo "======================================"
 echo "Claude Code Workflow Automation Setup"
+if [ "$ENHANCED_MODE" = true ]; then
+    echo "     🚀 ENHANCED MODE (Hooks + Agents)"
+fi
 echo "======================================"
 echo ""
 
@@ -31,17 +40,45 @@ fi
 echo "📁 Creating Claude directory structure..."
 mkdir -p "$CLAUDE_HOME"/{scripts,templates,workflows}
 
+# Create additional directories for enhanced mode
+if [ "$ENHANCED_MODE" = true ]; then
+    mkdir -p "$CLAUDE_HOME"/{hooks,agents}
+    echo "🪝 Creating hooks and agents directories..."
+fi
+
 echo "📝 Copying workflow files..."
 cp -r "$SCRIPT_DIR/scripts/"* "$CLAUDE_HOME/scripts/" 2>/dev/null || true
 cp -r "$SCRIPT_DIR/templates/"* "$CLAUDE_HOME/templates/" 2>/dev/null || true
 cp -r "$SCRIPT_DIR/workflows/"* "$CLAUDE_HOME/workflows/" 2>/dev/null || true
+
+# Copy enhanced components if in enhanced mode
+if [ "$ENHANCED_MODE" = true ]; then
+    echo "🪝 Installing hooks..."
+    if [ -d "$SCRIPT_DIR/hooks" ]; then
+        cp -r "$SCRIPT_DIR/hooks/"* "$CLAUDE_HOME/hooks/" 2>/dev/null || true
+        echo "  ✅ Installed $(ls -1 $SCRIPT_DIR/hooks/*.json 2>/dev/null | wc -l) hooks"
+    fi
+    
+    echo "🤖 Installing agents..."
+    if [ -d "$SCRIPT_DIR/agents" ]; then
+        cp -r "$SCRIPT_DIR/agents/"* "$CLAUDE_HOME/agents/" 2>/dev/null || true
+        echo "  ✅ Installed $(ls -1 $SCRIPT_DIR/agents/*.json 2>/dev/null | wc -l) agents"
+    fi
+fi
 
 echo "📄 Setting up CLAUDE.md global instructions..."
 if [ -f "$SCRIPT_DIR/CLAUDE.md.template" ]; then
     cp "$SCRIPT_DIR/CLAUDE.md.template" "$CLAUDE_HOME/CLAUDE.md"
 else
     # Create minimal CLAUDE.md if template not found
-    cat > "$CLAUDE_HOME/CLAUDE.md" << 'EOF'
+    # Use enhanced script if in enhanced mode
+    if [ "$ENHANCED_MODE" = true ]; then
+        LAUNCH_SCRIPT="auto-launch-enhanced.sh"
+    else
+        LAUNCH_SCRIPT="auto-launch.sh"
+    fi
+    
+    cat > "$CLAUDE_HOME/CLAUDE.md" << EOF
 # Claude Project Instructions
 
 ## Automatic Workflow on Launch
@@ -51,7 +88,7 @@ ALWAYS perform these steps when Claude Code launches in a new project:
 2. **Session Setup**: Initialize or load session state management
 3. **Task Continuity**: Check for pending tasks from previous sessions
 
-Execute this by running: `source ~/.claude/scripts/auto-launch.sh`
+Execute this by running: \`source ~/.claude/scripts/$LAUNCH_SCRIPT\`
 
 ## Python Development Best Practices
 
@@ -76,6 +113,12 @@ fi
 echo "📚 Copying documentation..."
 if [ -f "$SCRIPT_DIR/docs/README.md" ]; then
     cp "$SCRIPT_DIR/docs/README.md" "$CLAUDE_HOME/README.md"
+fi
+
+# Copy enhanced documentation if in enhanced mode
+if [ "$ENHANCED_MODE" = true ] && [ -f "$SCRIPT_DIR/docs/HOOKS_AND_AGENTS.md" ]; then
+    cp "$SCRIPT_DIR/docs/HOOKS_AND_AGENTS.md" "$CLAUDE_HOME/HOOKS_AND_AGENTS.md"
+    echo "  ✅ Installed enhanced documentation"
 fi
 
 echo "🔧 Setting executable permissions..."
@@ -119,22 +162,56 @@ if [ "$VERIFICATION_PASSED" = true ]; then
     echo ""
     echo "======================================"
     echo "🎉 Claude Code Workflow Automation Ready!"
+    if [ "$ENHANCED_MODE" = true ]; then
+        echo "      Enhanced with Hooks + Agents"
+    fi
     echo "======================================"
     echo ""
     echo "The system is now installed and configured at: $CLAUDE_HOME"
     echo ""
+    
+    if [ "$ENHANCED_MODE" = true ]; then
+        echo "🚀 Enhanced Features Installed:"
+        if [ -d "$CLAUDE_HOME/hooks" ] && [ "$(ls -A $CLAUDE_HOME/hooks/*.json 2>/dev/null)" ]; then
+            echo "  🪝 Hooks: $(ls -1 $CLAUDE_HOME/hooks/*.json 2>/dev/null | wc -l) active"
+            echo "     - Safety checks on dangerous operations"
+            echo "     - Automatic context updates"
+            echo "     - Git workflow enforcement"
+        fi
+        if [ -d "$CLAUDE_HOME/agents" ] && [ "$(ls -A $CLAUDE_HOME/agents/*.json 2>/dev/null)" ]; then
+            echo "  🤖 Agents: $(ls -1 $CLAUDE_HOME/agents/*.json 2>/dev/null | wc -l) available"
+            echo "     - Project analyzer for deep analysis"
+            echo "     - Task manager for intelligent prioritization"
+            echo "     - Code reviewer for quality assurance"
+            echo "     - Session handoff for continuity"
+            echo "     - Test runner for smart testing"
+        fi
+        echo ""
+    fi
+    
     echo "📋 What happens now:"
     echo "1. Claude Code will automatically read $CLAUDE_HOME/CLAUDE.md on launch"
     echo "2. The workflow automation will run when you start a new project"
-    echo "3. Context files will be created in each project's .claude-context/ directory"
+    echo "3. Context files will be created in each project's .claude/ directory"
+    if [ "$ENHANCED_MODE" = true ]; then
+        echo "4. Hooks will automatically enforce safety and best practices"
+        echo "5. Agents will provide intelligent assistance"
+    fi
     echo ""
     echo "🚀 Quick Test:"
     echo "To test the installation, run:"
     echo "  cd ~/some-project"
-    echo "  source ~/.claude/scripts/auto-launch.sh"
+    if [ "$ENHANCED_MODE" = true ]; then
+        echo "  source ~/.claude/scripts/auto-launch-enhanced.sh"
+    else
+        echo "  source ~/.claude/scripts/auto-launch.sh"
+    fi
     echo ""
     echo "📖 Documentation:"
     echo "See $CLAUDE_HOME/README.md for detailed usage instructions"
+    if [ "$ENHANCED_MODE" = true ]; then
+        echo "See $CLAUDE_HOME/HOOKS_AND_AGENTS.md for enhanced features"
+    fi
     echo ""
 else
     echo ""

@@ -1,0 +1,119 @@
+{
+  "name": "session-handoff",
+  "description": "Creates comprehensive handoff documents for session transitions",
+  "trigger": "manual|auto",
+  "auto_trigger_conditions": [
+    "session_end",
+    "context_switch",
+    "long_pause_detected"
+  ],
+  "capabilities": {
+    "tools": ["Read", "Write", "Bash", "Grep"],
+    "permissions": {
+      "read_all": true,
+      "write_locations": [".claude/context/handoffs/"]
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "gather_session_data",
+        "actions": [
+          "collect_modified_files",
+          "extract_completed_tasks",
+          "identify_pending_work",
+          "capture_decision_history"
+        ]
+      },
+      {
+        "name": "analyze_current_state",
+        "actions": [
+          "check_git_status",
+          "run_tests",
+          "check_build_status",
+          "identify_blockers"
+        ]
+      },
+      {
+        "name": "extract_context",
+        "actions": [
+          "summarize_changes",
+          "document_patterns",
+          "capture_configurations",
+          "note_external_dependencies"
+        ]
+      },
+      {
+        "name": "generate_recommendations",
+        "actions": [
+          "prioritize_next_steps",
+          "identify_risks",
+          "suggest_investigations",
+          "flag_urgent_items"
+        ]
+      },
+      {
+        "name": "create_handoff",
+        "actions": [
+          "compile_comprehensive_document",
+          "generate_quick_summary",
+          "create_checklist",
+          "estimate_context_recovery_time"
+        ]
+      }
+    ]
+  },
+  "data_collection": {
+    "session_metrics": [
+      "duration",
+      "files_modified",
+      "tasks_completed",
+      "commits_made",
+      "tests_run"
+    ],
+    "state_capture": [
+      "working_directory",
+      "environment_variables",
+      "running_processes",
+      "open_connections"
+    ],
+    "context_elements": [
+      "recent_decisions",
+      "abandoned_approaches",
+      "discovered_issues",
+      "learned_patterns"
+    ]
+  },
+  "prompts": {
+    "initial": "Create a comprehensive handoff document capturing all session context, progress, and recommendations.",
+    "quick": "Generate a quick handoff summary with the most critical information for the next session.",
+    "detailed": "Create an exhaustive handoff including all technical details, decisions, and context."
+  },
+  "output": {
+    "format": "markdown",
+    "destination": ".claude/context/handoffs/session-{timestamp}.md",
+    "sections": [
+      "Session Summary",
+      "Key Achievements",
+      "Current State",
+      "Pending Work",
+      "Blocking Issues",
+      "Technical Context",
+      "Recommendations",
+      "Quick Start Guide"
+    ],
+    "quality_metrics": {
+      "completeness_score": true,
+      "context_recovery_estimate": true,
+      "continuity_confidence": true
+    }
+  },
+  "intelligence": {
+    "auto_summarization": true,
+    "critical_path_identification": true,
+    "dependency_mapping": true,
+    "risk_assessment": true
+  },
+  "enabled": true,
+  "priority": 85
+}

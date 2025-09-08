@@ -1,0 +1,90 @@
+{
+  "name": "task-manager",
+  "description": "Intelligent task prioritization and tracking agent",
+  "trigger": "manual|auto",
+  "auto_trigger_conditions": [
+    "task_completion",
+    "new_user_request",
+    "blocking_issue_detected"
+  ],
+  "capabilities": {
+    "tools": ["Read", "Write", "TodoWrite"],
+    "permissions": {
+      "write_locations": [".claude/context/task-tracker.md"],
+      "read_all": true
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "analyze_current_state",
+        "actions": [
+          "read_existing_tasks",
+          "check_task_dependencies",
+          "identify_blockers"
+        ]
+      },
+      {
+        "name": "prioritize_tasks",
+        "actions": [
+          "calculate_impact_scores",
+          "consider_dependencies",
+          "optimize_task_order"
+        ]
+      },
+      {
+        "name": "update_tracking",
+        "actions": [
+          "update_task_statuses",
+          "log_progress",
+          "estimate_completion"
+        ]
+      },
+      {
+        "name": "generate_recommendations",
+        "actions": [
+          "suggest_next_tasks",
+          "identify_parallel_work",
+          "flag_risk_areas"
+        ]
+      }
+    ]
+  },
+  "task_classification": {
+    "priority_levels": ["critical", "high", "medium", "low"],
+    "categories": [
+      "bug_fix",
+      "feature",
+      "refactor",
+      "documentation",
+      "testing",
+      "deployment"
+    ],
+    "status_types": [
+      "pending",
+      "in_progress",
+      "blocked",
+      "review",
+      "completed"
+    ]
+  },
+  "prompts": {
+    "initial": "Review all current tasks, analyze dependencies, and create an optimized work plan.",
+    "task_update": "Update task '{task_name}' status to '{new_status}' and recalculate priorities.",
+    "recommendation": "Based on current progress and dependencies, suggest the next best actions."
+  },
+  "intelligence": {
+    "dependency_detection": true,
+    "automatic_prioritization": true,
+    "blocker_identification": true,
+    "parallel_task_suggestion": true,
+    "time_estimation": true
+  },
+  "output": {
+    "format": "markdown",
+    "destination": ".claude/context/task-tracker.md",
+    "real_time_updates": true
+  },
+  "enabled": true,
+  "priority": 95
+}

@@ -15,8 +15,16 @@ import argparse
 class ProjectAnalyzer:
     def __init__(self, project_path="."):
         self.project_path = Path(project_path).resolve()
-        self.context_dir = self.project_path / ".claude-context"
-        self.context_dir.mkdir(exist_ok=True)
+        self.claude_dir = self.project_path / ".claude"
+        self.context_dir = self.claude_dir / "context"
+        
+        # Check if .claude directory exists, create if not
+        if not self.claude_dir.exists():
+            print("📁 Creating .claude directory...")
+            self.claude_dir.mkdir(exist_ok=True)
+        
+        # Create context subdirectory within .claude
+        self.context_dir.mkdir(parents=True, exist_ok=True)
         
     def detect_project_type(self):
         """Detect project type based on configuration files."""
@@ -344,6 +352,7 @@ Documentation Files: {len(structure['doc_files'])}
 
 ## Resources & Links
 - Project Root: {self.project_path}
+- Claude Directory: {self.claude_dir}
 - Context Directory: {self.context_dir}
 """
         

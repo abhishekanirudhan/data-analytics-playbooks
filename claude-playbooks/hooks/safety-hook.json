@@ -1,0 +1,65 @@
+{
+  "name": "safety-hook",
+  "description": "Prevents destructive operations and enforces safety checks",
+  "events": ["PreToolUse"],
+  "script": {
+    "PreToolUse": {
+      "Bash": {
+        "condition": "tool.name === 'Bash'",
+        "action": "validate",
+        "rules": [
+          {
+            "pattern": "rm -rf /|rm -rf ~|rm -rf \\*",
+            "action": "block",
+            "message": "Dangerous recursive deletion detected. Please confirm this operation is intended."
+          },
+          {
+            "pattern": ":(){ :|:& };:|fork bomb",
+            "action": "block",
+            "message": "Fork bomb detected. This operation is not allowed."
+          },
+          {
+            "pattern": "dd if=/dev/zero|dd if=/dev/random",
+            "action": "warn",
+            "message": "Potentially dangerous dd operation. Proceeding with caution."
+          },
+          {
+            "pattern": "chmod 777|chmod -R 777",
+            "action": "warn",
+            "message": "Setting overly permissive permissions. Consider using more restrictive permissions."
+          },
+          {
+            "pattern": "sudo rm|sudo mv|sudo chmod",
+            "action": "confirm",
+            "message": "Sudo operation detected. Please confirm this privileged operation."
+          }
+        ]
+      },
+      "Write": {
+        "condition": "tool.name === 'Write' || tool.name === 'Edit'",
+        "action": "validate",
+        "rules": [
+          {
+            "pattern": "~/.ssh/|~/.aws/|~/.config/",
+            "action": "warn",
+            "message": "Modifying sensitive configuration directory. Please ensure no credentials are exposed."
+          },
+          {
+            "pattern": "\\.env$|\\.env\\..*$",
+            "action": "scan",
+            "message": "Environment file detected. Scanning for exposed secrets.",
+            "scan_patterns": [
+              "API_KEY=",
+              "SECRET=",
+              "PASSWORD=",
+              "TOKEN=",
+              "PRIVATE_KEY="
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "enabled": true,
+  "priority": 100
+}

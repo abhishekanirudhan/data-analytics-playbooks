@@ -1,0 +1,78 @@
+{
+  "name": "project-analyzer",
+  "description": "Advanced project analysis and context generation agent",
+  "trigger": "auto",
+  "auto_trigger_conditions": [
+    "session_start",
+    "new_project_detected",
+    "major_structure_change"
+  ],
+  "capabilities": {
+    "tools": ["Read", "Glob", "Grep", "Bash", "Write"],
+    "permissions": {
+      "write_locations": [".claude/context/"],
+      "read_all": true
+    }
+  },
+  "workflow": {
+    "steps": [
+      {
+        "name": "detect_project_type",
+        "actions": [
+          "scan_for_config_files",
+          "identify_languages",
+          "detect_frameworks"
+        ]
+      },
+      {
+        "name": "analyze_structure",
+        "actions": [
+          "map_directory_tree",
+          "identify_key_files",
+          "detect_patterns"
+        ]
+      },
+      {
+        "name": "extract_metadata",
+        "actions": [
+          "parse_package_files",
+          "extract_dependencies",
+          "identify_commands"
+        ]
+      },
+      {
+        "name": "generate_context",
+        "actions": [
+          "create_project_overview",
+          "generate_task_suggestions",
+          "identify_improvement_areas"
+        ]
+      }
+    ]
+  },
+  "prompts": {
+    "initial": "Analyze this project comprehensively. Identify the technology stack, project structure, development patterns, and generate a detailed context document.",
+    "focus_areas": [
+      "Identify all languages and frameworks used",
+      "Map the complete project structure",
+      "Find all build, test, and deployment commands",
+      "Detect coding patterns and conventions",
+      "Identify potential issues or improvements"
+    ]
+  },
+  "output": {
+    "format": "markdown",
+    "destination": ".claude/context/project-overview.md",
+    "sections": [
+      "Project Summary",
+      "Technology Stack",
+      "Project Structure",
+      "Development Environment",
+      "Key Files and Components",
+      "Patterns and Conventions",
+      "Potential Improvements"
+    ]
+  },
+  "enabled": true,
+  "priority": 100
+}
