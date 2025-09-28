@@ -11,6 +11,7 @@ import re
 from datetime import datetime
 from pathlib import Path
 import argparse
+import shutil
 
 class ProjectAnalyzer:
     def __init__(self, project_path="."):
@@ -194,22 +195,46 @@ class ProjectAnalyzer:
         
         return structure
     
-    def generate_analysis(self):
+    def generate_analysis(self, update_mode=False):
         """Generate comprehensive project analysis."""
         print("🔍 Analyzing project structure...")
-        
+
         project_types = self.detect_project_type()
         git_info = self.analyze_git_status()
         build_tools = self.detect_build_tools(project_types)
         structure = self.scan_project_structure()
-        
-        # Generate project overview
-        overview = self._generate_project_overview(project_types, git_info, build_tools, structure)
-        
-        # Write files
+
         overview_file = self.context_dir / 'project-overview.md'
-        with open(overview_file, 'w') as f:
-            f.write(overview)
+
+        if update_mode and overview_file.exists():
+            print("📝 Updating existing project overview...")
+            # Create backup
+            backup_file = overview_file.with_suffix('.md.bak')
+            shutil.copy(overview_file, backup_file)
+
+            # Read existing content to preserve custom sections
+            with open(overview_file, 'r') as f:
+                existing_content = f.read()
+
+            # Generate new overview
+            new_overview = self._generate_project_overview(project_types, git_info, build_tools, structure)
+
+            # Merge: Update timestamps and dynamic sections, preserve custom notes
+            if '## Custom Notes' in existing_content:
+                # Extract custom notes section
+                custom_section = existing_content.split('## Custom Notes')[1].split('\n##')[0]
+                # Append to new overview
+                new_overview += '\n## Custom Notes' + custom_section
+
+            with open(overview_file, 'w') as f:
+                f.write(new_overview)
+        else:
+            # Generate new project overview
+            overview = self._generate_project_overview(project_types, git_info, build_tools, structure)
+
+            # Write files
+            with open(overview_file, 'w') as f:
+                f.write(overview)
         
         # Generate initial task list
         self._generate_initial_tasks(project_types, structure)
@@ -315,23 +340,61 @@ Documentation Files: {len(structure['doc_files'])}
         return '\n'.join(f"- `{item}`" for item in items)
     
     def _generate_initial_tasks(self, project_types, structure):
-        """Generate initial task list based on analysis."""
+        """Generate or update task list based on analysis."""
+        task_file = self.context_dir / 'task-tracker.md'
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Check if task file already exists
+        if task_file.exists():
+            print("📋 Updating existing task tracker...")
+            # Read existing content
+            with open(task_file, 'r') as f:
+                existing_content = f.read()
+
+            # Update timestamp only
+            import re
+            updated_content = re.sub(
+                r'\*\*Last Updated:\*\*.*',
+                f'**Last Updated:** {timestamp}',
+                existing_content
+            )
+
+            # Add analysis suggestions if needed
+            if not structure['doc_files'] and 'Consider creating project documentation' not in existing_content:
+                # Find pending tasks section and append
+                lines = updated_content.split('\n')
+                for i, line in enumerate(lines):
+                    if '## Pending Tasks' in line:
+                        # Insert after this line
+                        lines.insert(i + 1, '- [ ] Consider creating project documentation (auto-suggested)')
+                        break
+                updated_content = '\n'.join(lines)
+
+            if structure['languages'] and not structure['test_dirs'] and 'Consider adding test coverage' not in existing_content:
+                lines = updated_content.split('\n')
+                for i, line in enumerate(lines):
+                    if '## Pending Tasks' in line:
+                        lines.insert(i + 1, '- [ ] Consider adding test coverage (auto-suggested)')
+                        break
+                updated_content = '\n'.join(lines)
+
+            with open(task_file, 'w') as f:
+                f.write(updated_content)
+            return
+
+        # Create new task tracker if doesn't exist
         tasks = [
             "Complete project analysis and understand codebase",
             "Review existing documentation and README files",
             "Understand project goals and requirements"
         ]
-        
+
         # Add project-specific tasks
         if not structure['doc_files']:
             tasks.append("Consider creating project documentation")
-        
+
         if structure['languages'] and not structure['test_dirs']:
             tasks.append("Consider adding test coverage")
-        
-        # Write initial task tracker
-        task_file = self.context_dir / 'task-tracker.md'
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
         content = f"""# Task Tracker
 
@@ -363,12 +426,13 @@ def main():
     parser = argparse.ArgumentParser(description='Analyze project structure for Claude Code')
     parser.add_argument('--path', default='.', help='Project path to analyze')
     parser.add_argument('--verbose', action='store_true', help='Verbose output')
-    
+    parser.add_argument('--update', action='store_true', help='Update existing analysis instead of overwriting')
+
     args = parser.parse_args()
-    
+
     analyzer = ProjectAnalyzer(args.path)
     try:
-        result = analyzer.generate_analysis()
+        result = analyzer.generate_analysis(update_mode=args.update)
         
         if args.verbose:
             print("\nAnalysis Results:")
